@@ -143,3 +143,40 @@ print("\nDetailed classification report on validation set:")
 print(classification_report(all_labels, all_preds, target_names=target_names, digits=4))
 print("Confusion matrix:")
 print(confusion_matrix(all_labels, all_preds))
+
+# Run the Model
+def predict_image(img_path, dataset=base_dataset, transform=transform, model=model, device=device):
+    model.eval()
+    img = Image.open(img_path).convert('RGB')
+    x = transform(img).unsqueeze(0).to(device)
+    with torch.no_grad():
+        outputs = model(x)
+        _, pred = outputs.max(1)
+    idx_to_class = {v: k for k, v in dataset.class_to_idx.items()}
+    class_name = idx_to_class[pred.item()]
+    print(f"Prediction: {class_name}")
+
+
+    predicted_class_idx = pred.item()
+    candidate_paths = [path for path, label in dataset.samples if label == predicted_class_idx]
+    shown_examples = random.sample(candidate_paths, min(3, len(candidate_paths)))
+
+    plt.figure(figsize=(12, 4))
+
+    plt.subplot(1, 4, 1)
+    plt.imshow(img)
+    plt.title("Input Image")
+    plt.axis('off')
+
+    for i, cpath in enumerate(shown_examples):
+        compare_img = Image.open(cpath).convert('RGB')
+        plt.subplot(1, 4, i + 2)
+        plt.imshow(compare_img)
+        plt.title(f"Class Example {i+1}")
+        plt.axis('off')
+
+    plt.suptitle(f"Prediction: {class_name}")
+    plt.tight_layout()
+    plt.show()
+
+predict_image(r"------------\dog1.jpeg")
