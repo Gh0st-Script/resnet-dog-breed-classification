@@ -73,14 +73,13 @@ This will print the predicted breed and show comparison images.
 ## Project Structure
 
 ```
-dog-breed-classification-pytorch/
+resnet-dog-breed-classification/
 ├── README.md
 ├── requirements.txt
 ├── train.py
 ├── inference.py
 ├── model/
 ├── utils.py
-├── dog_dataset/
 ```
 
 ---
