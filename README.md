@@ -1,4 +1,4 @@
-# Dog Breed Classification with PyTorch & ResNet18 🐶
+# Dog Breed Classification with PyTorch & ResNet18
 
 A deep learning project that classifies images of dogs into 120 breeds using PyTorch and a fine-tuned ResNet18 model.  
 Trained on the [Stanford Dog Dataset](http://vision.stanford.edu/aditya86/ImageNetDogs/).
