@@ -66,7 +66,7 @@ This will print the predicted breed and show comparison images.
 
 **Example Output:**
 
-![example](images/example_prediction_1.jpg)
+![example](images/example_prediction_1.png)
 
 ---
 
