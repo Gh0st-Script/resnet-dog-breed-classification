@@ -32,15 +32,16 @@ transform = transforms.Compose([
 # Load the dataset
 base_dataset = datasets.ImageFolder(root = img_path, transform = transform)
 
-
 train_size = int(0.8 * len(base_dataset))
 val_size = len(base_dataset) - train_size
 
 train_dataset, val_dataset = random_split(base_dataset, [train_size, val_size], generator = torch.Generator().manual_seed(42))
 
+
 # Create DataLoaders for training and validation datasets
 train_loader = DataLoader(train_dataset, batch_size = 16, shuffle = True, num_workers = 2, pin_memory = True)
 val_loader = DataLoader(val_dataset, batch_size = 16, shuffle = False, num_workers = 2, pin_memory = True)
+
 
 # Define the model
 num_classes = len(base_dataset.classes)
@@ -49,6 +50,7 @@ model = timm.create_model('resnet18', pretrained = True,num_classes = 120)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = model.to(device)
+
 
 # Training function
 criterion = nn.CrossEntropyLoss()
@@ -115,3 +117,29 @@ torch.save({
 }, "img_class_mdl_final.pth")
 
 print("Training complete. Model and class mapping saved!")
+
+
+# Evaluation on the validation set
+model.eval()
+
+
+all_preds = []
+all_labels = []
+
+with torch.no_grad():
+    for images, targets in val_loader:
+        images = images.to(device, non_blocking = True)
+        targets = targets.to(device, non_blocking = True)
+        outputs = model(images)
+        _, predicted = torch.max(outputs, 1)
+        all_preds.extend(predicted.cpu().numpy())
+        all_labels.extend(targets.cpu().numpy())
+        
+        
+idx_to_class = {v: k for k, v in base_dataset.class_to_idx.items()}
+target_names = [idx_to_class[i] for i in range(len(idx_to_class))]
+
+print("\nDetailed classification report on validation set:")
+print(classification_report(all_labels, all_preds, target_names=target_names, digits=4))
+print("Confusion matrix:")
+print(confusion_matrix(all_labels, all_preds))
