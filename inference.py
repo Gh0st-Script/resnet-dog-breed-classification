@@ -6,7 +6,7 @@ import random
 import timm
 
 
-img_path = r"-------\Images"
+img_path = r"------------\Images" # Replace '------\---\Images' with the actual path to your dataset
 
 transform = transforms.Compose([
     transforms.Resize((224,224)),
@@ -16,7 +16,7 @@ transform = transforms.Compose([
 
 
 # Load the model checkpoint
-checkpoint = torch.load("img_class_mdl_final.pth", map_location="cpu")
+checkpoint = torch.load("model.pth", map_location="cpu")
 class_to_idx = checkpoint["class_to_idx"]
 idx_to_class = {v: k for k, v in class_to_idx.items()}
 num_classes = len(class_to_idx)
