@@ -78,8 +78,7 @@ resnet-dog-breed-classification/
 ├── requirements.txt
 ├── train.py
 ├── inference.py
-├── model/
-├── utils.py
+├── model.pth
 ```
 
 ---
