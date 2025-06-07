@@ -6,7 +6,7 @@ import random
 import timm
 
 
-img_path = r"------------\Images" # Replace '------\---\Images' with the actual path to your dataset
+img_path = r"------------\Images" # Replace '------------\Images' with the actual path to your dataset
 
 transform = transforms.Compose([
     transforms.Resize((224,224)),
